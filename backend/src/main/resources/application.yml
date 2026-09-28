@@ -1,0 +1,22 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: coaching-saas-backend
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/coaching_saas}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+app:
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:4200}
+  jwt:
+    secret: ${JWT_SECRET:change-this-local-secret-to-a-long-random-value-please-123456789}
+    expiration-ms: 86400000
+  super-admin:
+    email: ${SUPER_ADMIN_EMAIL:superadmin@local.test}
+    password: ${SUPER_ADMIN_PASSWORD:ChangeMe_123!}

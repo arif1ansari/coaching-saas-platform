@@ -1,0 +1,11 @@
+package com.coaching.saas.controller;
+import com.coaching.saas.api.ApiModels.ErrorResponse; import jakarta.servlet.http.HttpServletRequest; import org.springframework.http.*; import org.springframework.security.core.AuthenticationException; import org.springframework.web.bind.MethodArgumentNotValidException; import org.springframework.web.bind.annotation.*; import org.springframework.web.server.ResponseStatusException;
+import java.time.Instant; import java.util.Map;
+@RestControllerAdvice
+public class ApiExceptionHandler {
+ @ExceptionHandler(MethodArgumentNotValidException.class) ResponseEntity<ErrorResponse> validation(MethodArgumentNotValidException e,HttpServletRequest r){Map<String,String> errors=new java.util.LinkedHashMap<>();e.getBindingResult().getFieldErrors().forEach(x->errors.putIfAbsent(x.getField(),x.getDefaultMessage()));return ResponseEntity.badRequest().body(new ErrorResponse(Instant.now().toString(),400,"VALIDATION_ERROR","Invalid request",r.getRequestURI(),errors));}
+ @ExceptionHandler({IllegalArgumentException.class,IllegalStateException.class}) ResponseEntity<ErrorResponse> business(RuntimeException e,HttpServletRequest r){return ResponseEntity.badRequest().body(new ErrorResponse(Instant.now().toString(),400,"BUSINESS_ERROR",e.getMessage(),r.getRequestURI(),Map.of()));}
+ @ExceptionHandler(AuthenticationException.class) ResponseEntity<ErrorResponse> authentication(AuthenticationException e,HttpServletRequest r){return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse(Instant.now().toString(),401,"AUTHENTICATION_ERROR","Invalid email or password",r.getRequestURI(),Map.of()));}
+ @ExceptionHandler(ResponseStatusException.class) ResponseEntity<ErrorResponse> status(ResponseStatusException e,HttpServletRequest r){int status=e.getStatusCode().value();return ResponseEntity.status(e.getStatusCode()).body(new ErrorResponse(Instant.now().toString(),status,status==403?"FORBIDDEN":"REQUEST_ERROR",e.getReason(),r.getRequestURI(),Map.of()));}
+ @ExceptionHandler(Exception.class) ResponseEntity<ErrorResponse> other(Exception e,HttpServletRequest r){return ResponseEntity.status(500).body(new ErrorResponse(Instant.now().toString(),"Unexpected server error",r.getRequestURI()));}
+}

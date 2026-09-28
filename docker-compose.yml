@@ -1,0 +1,37 @@
+services:
+  mongodb:
+    image: mongo:8
+    container_name: coaching-saas-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: coaching_saas
+
+  backend:
+    build: ./backend
+    container_name: coaching-saas-backend
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/coaching_saas
+      JWT_SECRET: change-this-local-secret-to-a-long-random-value-please-123456789
+      SUPER_ADMIN_EMAIL: superadmin@local.test
+      SUPER_ADMIN_PASSWORD: ChangeMe_123!
+
+  frontend:
+    build: ./frontend
+    container_name: coaching-saas-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
+
+volumes:
+  mongo_data:

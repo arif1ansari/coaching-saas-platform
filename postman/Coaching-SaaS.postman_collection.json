@@ -1,0 +1,432 @@
+{
+  "info": {
+    "name": "Coaching SaaS Platform",
+    "_postman_id": "coaching-saas-mvp",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "sessionId",
+      "value": ""
+    },
+    {
+      "key": "feeId",
+      "value": ""
+    },
+    {
+      "key": "testId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Signup",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"coachingName\": \"Demo Coaching\", \"ownerName\": \"Arif\", \"email\": \"owner@example.com\", \"mobile\": \"9999999999\", \"password\": \"Password@123\", \"city\": \"Delhi\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/signup",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "signup"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"owner@example.com\", \"password\": \"Password@123\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Dashboard",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/dashboard",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "dashboard"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Teacher",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Demo Teacher\", \"email\": \"teacher@example.com\", \"mobile\": \"8888888888\", \"subjects\": [\"Physics\"], \"batchIds\": []}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/teachers",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "teachers"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Batch",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"JEE Morning\", \"course\": \"JEE\", \"subjects\": [\"Physics\", \"Maths\"], \"teacherIds\": []}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/batches",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "batches"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Student",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Student One\", \"email\": \"student@example.com\", \"mobile\": \"7777777777\", \"batchId\": \"BATCH_ID\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/students",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "students"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Session",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"batchId\": \"BATCH_ID\", \"teacherId\": \"TEACHER_ID\", \"subject\": \"Physics\", \"date\": \"2026-09-25\", \"startTime\": \"10:00\", \"endTime\": \"11:00\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sessions",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "sessions"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Mark Attendance",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"students\": [{\"studentId\": \"STUDENT_ID\", \"status\": \"PRESENT\"}]}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/attendance/{{sessionId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "attendance",
+            "{{sessionId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Fee",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"studentId\": \"STUDENT_ID\", \"totalAmount\": 30000, \"installments\": [{\"name\": \"Installment 1\", \"amount\": 10000, \"dueDate\": \"2026-10-01\"}, {\"name\": \"Installment 2\", \"amount\": 10000, \"dueDate\": \"2026-11-01\"}, {\"name\": \"Installment 3\", \"amount\": 10000, \"dueDate\": \"2026-12-01\"}]}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/fees",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "fees"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Record Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"amount\": 10000, \"paymentDate\": \"2026-09-25\", \"mode\": \"CASH\", \"reference\": \"CASH-001\"}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/fees/{{feeId}}/payments",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "fees",
+            "{{feeId}}",
+            "payments"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Create Test",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"Physics Test 1\", \"batchId\": \"BATCH_ID\", \"subject\": \"Physics\", \"testDate\": \"2026-10-05\", \"totalMarks\": 100}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tests",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tests"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Submit Results",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"results\": [{\"studentId\": \"STUDENT_ID\", \"marks\": 82}]}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tests/{{testId}}/results",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tests",
+            "{{testId}}",
+            "results"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Change Password",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Authorization", "value": "Bearer {{token}}"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {"mode": "raw", "raw": "{\"currentPassword\": \"Password@123\", \"newPassword\": \"NewPassword@123\"}"},
+        "url": {"raw": "{{baseUrl}}/auth/change-password", "host": ["{{baseUrl}}"], "path": ["auth", "change-password"]}
+      }
+    },
+    {
+      "name": "Create Subject",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key": "Authorization", "value": "Bearer {{token}}"},
+          {"key": "Content-Type", "value": "application/json"}
+        ],
+        "body": {"mode": "raw", "raw": "{\"name\": \"Mathematics\", \"code\": \"MATH\"}"},
+        "url": {"raw": "{{baseUrl}}/subjects", "host": ["{{baseUrl}}"], "path": ["subjects"]}
+      }
+    },
+    {
+      "name": "Teacher Dashboard",
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": {"raw": "{{baseUrl}}/teacher/dashboard", "host": ["{{baseUrl}}"], "path": ["teacher", "dashboard"]}
+      }
+    },
+    {
+      "name": "Search Students",
+      "request": {
+        "method": "GET",
+        "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+        "url": {"raw": "{{baseUrl}}/students?search=rahul&page=0&size=20", "host": ["{{baseUrl}}"], "path": ["students"], "query": [{"key":"search","value":"rahul"},{"key":"page","value":"0"},{"key":"size","value":"20"}]}
+      }
+    },
+    {
+      "name": "Super Admin Dashboard",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/super-admin/dashboard",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "super-admin",
+            "dashboard"
+          ]
+        }
+      }
+    }
+  ]
+}
